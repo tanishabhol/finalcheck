@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safe Comment System</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.9/purify.min.js"></script>
+</head>
+<body>
+
+    <form onsubmit="saveComment(event)">
+        <label for="comment">Enter your comment:</label>
+        <input type="text" id="comment" name="comment">
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Comments:</h2>
+    <div id="comments"></div>
+
+    <script>
+        function saveComment(event) {
+            event.preventDefault();
+            let userInput = document.getElementById("comment").value;
+
+            // Sanitize input to remove potential XSS scripts
+            let cleanInput = DOMPurify.sanitize(userInput);
+
+            let newComment = document.createElement("p");
+            newComment.textContent = cleanInput;
+            document.getElementById("comments").appendChild(newComment);
+        }
+    </script>
+
+</body>
+</html>
